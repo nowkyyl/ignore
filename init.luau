@@ -10,12 +10,16 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local httprequest = (syn and syn.request) or (http and http.request) or http_request or (fluxus and fluxus.request) or request
 
 local RemoteEvents = ReplicatedStorage:WaitForChild("RemoteEvents")
+local player = Players.LocalPlayer
+repeat
+    task.wait()
+until player.Character
+
 RemoteEvents.CutsceneTerminou:FireServer()
 task.wait(.2)
 ReplicatedStorage.EscolherTime:FireServer("Segundo")
 task.wait(0.2)
 
-local player = Players.LocalPlayer
 player.OnTeleport:Connect(function(state)
     if state == Enum.TeleportState.Started then
         queue_on_teleport("loadstring(game:HttpGet('https://raw.githubusercontent.com/nowkyyl/ignore/refs/heads/main/init.luau'))()")
