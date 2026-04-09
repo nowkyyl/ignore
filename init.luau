@@ -16,21 +16,20 @@ ReplicatedStorage.EscolherTime:FireServer("Segundo")
 task.wait(0.2)
 
 local player = Players.LocalPlayer
-local tool
-repeat
-    tool = player:FindFirstChild("Backpack"):FindFirstChild("AR-15")
-    task.wait()
-until tool
-
 player.OnTeleport:Connect(function(state)
     if state == Enum.TeleportState.Started then
         queue_on_teleport("loadstring(game:HttpGet('https://raw.githubusercontent.com/nowkyyl/ignore/refs/heads/main/init.luau'))()")
     end
 end)
 
+local tool
+repeat
+    tool = player:FindFirstChild("Backpack"):FindFirstChild("AR-15")
+    task.wait()
+until tool
+
 local placeId = game.PlaceId
 local jobId = game.JobId
-local _serversCache = { jobId }
 local function GetServers()
     local success, result = pcall(function()
         local req = httprequest({
@@ -49,7 +48,7 @@ local function GetServers()
             continue
         end
 
-        if table.find(_serversCache, v.id) then
+        if v.id == jobId then
             continue
         end
 
@@ -59,7 +58,6 @@ local function GetServers()
 
         table.insert(servers, v.id)
     end
-
     return servers
 end
 
@@ -68,8 +66,6 @@ local function Teleport()
         local servers = GetServers()
         if #servers > 0 then
             local serverId = servers[math.random(1, #servers)]
-            table.insert(_serversCache, serverId)
-
             local ok = pcall(TeleportService.TeleportToPlaceInstance, TeleportService, placeId, serverId, player)
             if ok then
                 break
