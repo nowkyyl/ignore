@@ -13,7 +13,7 @@ local RemoteEvents = ReplicatedStorage:WaitForChild("RemoteEvents")
 local player = Players.LocalPlayer
 repeat
     task.wait()
-until player.Character
+until player.Character and player.Character:FindFirstChild("HumanoidRootPart")
 
 RemoteEvents.CutsceneTerminou:FireServer()
 task.wait(.2)
